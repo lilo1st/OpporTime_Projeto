@@ -1,37 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TO DO LIST</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="styles/style.css">
+    <script src="JS/script.js" defer></script>
+    <link rel="stylesheet" href="CSS/style.css" />
     <style>
-        @font-face {
-            font-family: 'Roboto';
-            src: url('assets/fonts/RobotoCondensed.ttf');
-        }
+      @font-face {
+        font-family: "Roboto";
+        src: url("assets/fonts/RobotoCondensed.ttf");
+      }
     </style>
-</head>
-<body class="min-h-[100dvh] content-center justify-items-center p-5 font-[Roboto] tracking-wider">
-    <main class="grid text-center border-[1px] border-solid border-black bg rounded-[10px] w-full max-w-[640px] sm:border-[#EA4121] sm:border-[7px]">
-            <h1 class="my-7 text-5xl">TO DO LIST</h1>
-            <form class="flex justify-around px-3 mb-10" id="AddList">
-                <label for="AddText" class="flex items-end gap-x-2 font-medium">
-                    Nova Tarefa
-                    <input type="text" id="AddText" class="focus:outline-none border-b-1 font-normal">
-                </label>
-                <input type="submit" value="Adicionar" class="cursor-pointer border-1 p-1 font-medium rounded-sm" id="submit">
-            </form>
-    
-            <hr class="hidden mx-[5%] border-t-2" id="linha">
+  </head>
+  <body class="min-h-screen bg-gray-50 flex justify-center p-5 font-[Roboto]">
+  <main class="w-full max-w-xl bg-white rounded-2xl shadow-md p-6 h-fit">
+    <h1 class="text-3xl text-gray-800 mb-6">Lista de tarefas</h1>
 
-            <section class="my-10 hidden" id="section">
-                <h2 class="font-medium border-black border-solid border-1 rounded-full w-[60%] justify-self-center text-xl p-2">Afazeres</h2>
-                <ul class="px-[25%] py-10 grid gap-y-10" id="Lista"></ul>
-            </section>
-        </section>
-    </main>
+    <form id="AddList" class="flex gap-3 mb-6">
+      <input
+        type="text"
+        id="AddText"
+        placeholder="Nova tarefa"
+        class="flex-1 border border-gray-300 rounded-full px-4 py-2 outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]"
+      >
+      <button
+        type="submit"
+        class="bg-[#1a73e8] hover:bg-[#1765cc] text-white font-medium rounded-full px-5 py-2 cursor-pointer"
+      >
+        Adicionar
+      </button>
+    </form>
+
+    <section id="section" class="hidden">
+      <h2 class="text-sm font-medium text-gray-500 uppercase mb-3">Afazeres</h2>
+      <ul id="Lista" class="divide-y divide-gray-200"></ul>
+    </section>
+  </main>
 </body>
 </html>
