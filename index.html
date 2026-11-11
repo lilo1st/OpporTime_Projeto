@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            src: url('assets/fonts/RobotoCondensed.ttf');
+        }
+    </style>
+</head>
+<body class="min-h-[100dvh] content-center justify-items-center p-5 font-[Roboto] tracking-wider">
+    <main class="grid text-center border-[1px] border-solid border-black bg rounded-[10px] w-full max-w-[640px] sm:border-[#EA4121] sm:border-[7px]">
+            <h1 class="my-7 text-5xl">TO DO LIST</h1>
+            <form class="flex justify-around px-3 mb-10" id="AddList">
+                <label for="AddText" class="flex items-end gap-x-2 font-medium">
+                    Nova Tarefa
+                    <input type="text" id="AddText" class="focus:outline-none border-b-1 font-normal">
+                </label>
+                <input type="submit" value="Adicionar" class="cursor-pointer border-1 p-1 font-medium rounded-sm" id="submit">
+            </form>
+    
+            <hr class="hidden mx-[5%] border-t-2" id="linha">
+
+            <section class="my-10 hidden" id="section">
+                <h2 class="font-medium border-black border-solid border-1 rounded-full w-[60%] justify-self-center text-xl p-2">Afazeres</h2>
+                <ul class="px-[25%] py-10 grid gap-y-10" id="Lista"></ul>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
