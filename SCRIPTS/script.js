@@ -2,76 +2,97 @@ const AddList = document.getElementById("AddList");
 const section = document.getElementById("section");
 const linha = document.getElementById("linha");
 const Lista = document.getElementById("Lista");
-const campoTarefa = document.getElementById("AddText");
+const campoOportuniadade = document.getElementById("AddText");
+const campoDescricao = document.getElementById("AddDescricao"); 
+const campoCategoria = document.getElementById("AddCategoria");
+const campoData = document.getElementById("AddData");
 
-let afazeres = [];
+let oportunidades = [];
 
-const novo = new Audio("assets/sounds/new.m4a");
-const hover = new Audio("assets/sounds/hover.m4a");
-const click = new Audio("assets/sounds/click.m4a");
+const audioNovo = new Audio("ASSETS/sounds/new.m4a");
+const audioHover = new Audio("ASSETS/sounds/hover.m4a");
+const audioClick = new Audio("ASSETS/sounds/click.m4a");
 
-// LOCALSTORAGE: mantém as tarefas mesmo depois de fechar o navegador.
-function salvarTarefas() {
-    localStorage.setItem("afazeres", JSON.stringify(afazeres));
+//SALVA A OPORTUNIDADE NO LOCALSTORAGE
+function salvarOportunidade() {
+    localStorage.setItem("oportunidade", JSON.stringify(oportunidades));
 }
 
-// SESSIONSTORAGE: mantém temporariamente o rascunho enquanto esta aba
-// estiver aberta. O conteúdo continua disponível após atualizar a página.
+// SALVA O RASCUNHO NO SESSIONSTORAGE
 function salvarRascunho() {
-    sessionStorage.setItem("rascunhoTarefa", campoTarefa.value);
+    sessionStorage.setItem("rascunhoOportunidade", campoOportuniadade.value);
 }
+campoOportuniadade.addEventListener("input", salvarRascunho);
 
+//PEGA AS OPORTUNIDADE DO LOCALSTORAGE
 function carregarDados() {
     try {
-        const dadosSalvos = JSON.parse(localStorage.getItem("afazeres"));
-        afazeres = Array.isArray(dadosSalvos) ? dadosSalvos : [];
+        const dadosSalvos = JSON.parse(localStorage.getItem("oportunidade"));
+        oportunidades = Array.isArray(dadosSalvos) ? dadosSalvos : [];
     } catch (erro) {
-        afazeres = [];
-        console.error("Não foi possível carregar as tarefas:", erro);
+        oportunidades = [];
+        console.error("Não foi possível carregar as oportunidade:", erro);
     }
 
-    afazeres.forEach((tarefa) => Listar(tarefa));
+    oportunidades.forEach((oportunidade) => Listar(oportunidade));
 
-    const rascunhoSalvo = sessionStorage.getItem("rascunhoTarefa");
+    const rascunhoSalvo = sessionStorage.getItem("rascunhoOportunidade");
     if (rascunhoSalvo !== null) {
-        campoTarefa.value = rascunhoSalvo;
+        campoOportuniadade.value = rascunhoSalvo;
     }
 
-    if (afazeres.length === 0) {
+    if (oportunidades.length === 0) {
         listaVazia();
     }
 }
 
-// Salva o texto digitado temporariamente no SessionStorage.
-campoTarefa.addEventListener("input", salvarRascunho);
-
+//ADICIONA UMA AÇÃO NO SUBMIT
 AddList.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const tarefa = campoTarefa.value.trim();
-    if (!tarefa) return;
+    const oportunidade = campoOportuniadade.value.trim();
+    if (!oportunidade) return;
 
-    afazeres.push(tarefa);
-    salvarTarefas();
-    Listar(tarefa);
+    const novaOportunidade = {
+        titulo: campoOportuniadade,
+        descricao: campoDescricao ? campoDescricao.value.trim() : "",
+        categoria: campoCategoria ? campoCategoria.value : "Geral",
+        data: campoData ? campoData.value : ""
+    };
+
+    oportunidades.push(novaOportunidade);
+    salvarOportunidade();
+    Listar(oportunidade);
 
     campoTarefa.value = "";
-    sessionStorage.removeItem("rascunhoTarefa");
+    if (campoDescricao) campoDescricao.value = "";
+    if (campoData) campoData.value = "";
+    sessionStorage.removeItem("rascunhoOportunidade");
 
-    novo.play();
+    campoOportuniadade.value = "";
+    sessionStorage.removeItem("rascunhoOportunidade");
+
+    audioNovo.play();
 });
 
-function Listar(tarefa) {
+//ACRESCENTA A oportunidade NA LISTA
+function Listar(oportunidade) {
     const li = document.createElement("li");
     const form = document.createElement("form");
     const input = document.createElement("input");
     const h3 = document.createElement("h3");
+    const pDescricao = document.createElement("p");
+    const spanCategoria = document.createElement("span");
+    const spanData = document.createElement("span");
 
     input.type = "submit";
     input.value = "X";
     input.classList.add("excluir");
 
-    h3.textContent = tarefa;
+    h3.textContent = oportunidade;
+    pDescricao.textContent = oportunidade.descricao;
+    spanCategoria.textContent = `Categoria: ${oportunidade.categoria}`;
+    spanData.textContent = oportunidade.data ? `Data: ${oportunidade.data.split('-').reverse().join('/')}` : '';
 
     Lista.appendChild(li);
     li.appendChild(form);
@@ -80,13 +101,14 @@ function Listar(tarefa) {
 
     listaComItens();
 
+    //ADICIONA UMA AÇÃO NO SUBMIT DA oportunidade EM PARTICULAR
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const mesmoItem = afazeres.indexOf(tarefa);
+        const mesmoItem = oportunidades.indexOf(oportunidade);
         if (mesmoItem !== -1) {
-            afazeres.splice(mesmoItem, 1);
-            salvarTarefas();
+            oportunidades.splice(mesmoItem, 1);
+            salvarOportunidade();
         }
 
         li.remove();
@@ -95,10 +117,10 @@ function Listar(tarefa) {
             listaVazia();
         }
 
-        click.play();
+        audioClick.play();
     });
 
-    input.addEventListener("mouseenter", () => hover.play());
+    input.addEventListener("mouseenter", () => audioHover.play());
 }
 
 function listaComItens() {
@@ -111,9 +133,11 @@ function listaVazia() {
     linha.style.display = "none";
 }
 
-document.getElementById("submit").addEventListener("mouseenter", () => hover.play());
-campoTarefa.addEventListener("click", () => click.play());
-campoTarefa.addEventListener("mouseenter", () => hover.play());
+//QUANDO O MOUSE PASSAR SOBRE O SUBMIT, TOCA O EFEITO DE HOVER
+document.getElementById("submit").addEventListener("mouseenter", () => audioHover.play());
 
-// Carrega as tarefas permanentes e o rascunho temporário ao abrir a página.
+//QUANDO O MOUSE PASSAR SOBRE O SUBMIT OU CLICA NO SUBMIT, TOCA O RESPECTIVO EFEITO
+campoOportuniadade.addEventListener("click", () => audioClick.play());
+campoOportuniadade.addEventListener("mouseenter", () => audioHover.play());
+
 carregarDados();
