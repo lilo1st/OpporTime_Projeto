@@ -15,6 +15,12 @@ O projeto utiliza recursos do JavaScript para manipulação dinâmica dos elemen
 - **JavaScript (LocalStorage):** Armazenamento de informações no navegador, permitindo a persistência dos dados.
 - **Tailwind CSS:** Estilização da interface e desenvolvimento de um layout moderno, organizado e responsivo.
 
+### Persistência de Dados
+
+- **localStorage ("afazeres"):** Armazena a lista de tarefas em formato JSON de forma persistente (mantida mesmo após fechar o navegador).
+- **sessionStorage ("rascunhoTarefa"):** Salva em tempo real o rascunho digitado no input ("#AddText") enquanto a aba estiver aberta, restaurando o texto caso a página seja atualizada e limpando-o após o envio[cite: 1].
+- **Integridade:** O carregamento inicial utiliza "try/catch" e validação de array para prevenir falhas caso haja dados corrompidos.
+
 ### Funcionalidades
 
 - Cadastro de novas oportunidades.
@@ -45,6 +51,12 @@ The project uses JavaScript features to dynamically manipulate page elements, al
 - **JavaScript (DOM):** Dynamic manipulation of interface elements and management of user interactions.
 - **JavaScript (LocalStorage):** Browser-based data storage, allowing information persistence.
 - **Tailwind CSS:** Interface styling and development of a modern, organized, and responsive layout.
+
+### Data Persistence
+
+- **localStorage ("fazeres"):** Stores the task list in JSON format persistently (retained even after closing the browser).
+- **sessionStorage ("rascunhoTarefa"):** Saves the draft text entered into the input field ("#AddText") in real time while the tab remains open; it restores the text if the page is refreshed and clears it upon submission[cite: 1].
+- **Integrity:** The initial loading process employs "try/catch" blocks and array validation to prevent errors in the event of corrupted data.
 
 ### Features
 
