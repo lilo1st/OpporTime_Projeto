@@ -9,9 +9,9 @@ const campoData = document.getElementById("AddData");
 
 let oportunidades = [];
 
-const audioNovo = new Audio("ASSETS/SOUNDS/new.m4a");
-const audioHover = new Audio("ASSETS/SOUNDS/hover.m4a");
-const audioClick = new Audio("ASSETS/SOUNDS/click.m4a");
+const audioNovo = new Audio("ASSETS/sounds/new.m4a");
+const audioHover = new Audio("ASSETS/sounds/hover.m4a");
+const audioClick = new Audio("ASSETS/sounds/click.m4a");
 
 //SALVA A OPORTUNIDADE NO LOCALSTORAGE
 function salvarOportunidade() {
