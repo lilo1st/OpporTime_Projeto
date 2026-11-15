@@ -13,6 +13,7 @@ const audioNovo = new Audio("ASSETS/SOUNDS/new.m4a");
 const audioHover = new Audio("ASSETS/SOUNDS/hover.m4a");
 const audioClick = new Audio("ASSETS/SOUNDS/click.m4a");
 
+
 //SALVA A OPORTUNIDADE NO LOCALSTORAGE
 function salvarOportunidade() {
     localStorage.setItem("oportunidade", JSON.stringify(oportunidades));
@@ -20,9 +21,19 @@ function salvarOportunidade() {
 
 // SALVA O RASCUNHO NO SESSIONSTORAGE
 function salvarRascunho() {
-    sessionStorage.setItem("rascunhoOportunidade", campoOportuniadade.value);
+    const rascunho = {
+        titulo: campoOportuniadade ? campoOportuniadade.value: "",
+        descricao: campoDescricao ? campoDescricao.value: "",
+        categoria: campoCategoria ? campoCategoria.value: "",
+        data: campoData ? campoData.value: ""
+    };
+    sessionStorage.setItem("rascunho", JSON.stringify(rascunho))
 }
 campoOportuniadade.addEventListener("input", salvarRascunho);
+campoDescricao.addEventListener("input", salvarRascunho);
+campoCategoria.addEventListener("input", salvarRascunho);
+campoData.addEventListener("input", salvarRascunho);
+
 
 //PEGA AS OPORTUNIDADE DO LOCALSTORAGE
 function carregarDados() {
@@ -36,9 +47,16 @@ function carregarDados() {
 
     oportunidades.forEach((oportunidade) => Listar(oportunidade));
 
-    const rascunhoSalvo = sessionStorage.getItem("rascunhoOportunidade");
+    const rascunhoSalvo = JSON.parse(sessionStorage.getItem("rascunho"));
     if (rascunhoSalvo !== null) {
-        campoOportuniadade.value = rascunhoSalvo;
+        try {
+            campoOportuniadade.value = rascunhoSalvo.titulo
+            campoDescricao.value = rascunhoSalvo.descricao
+            campoCategoria.value = rascunhoSalvo.categoria
+            campoData.value = rascunhoSalvo.data
+        } catch (e) {
+            console.error("Erro ao carregar o rascunho:", e);
+        }
     }
 
     if (oportunidades.length === 0) {
@@ -54,7 +72,7 @@ AddList.addEventListener("submit", (e) => {
     if (!oportunidade) return;
 
     const novaOportunidade = {
-        titulo: campoOportuniadade,
+        titulo: campoOportuniadade.value,
         descricao: campoDescricao ? campoDescricao.value.trim() : "",
         categoria: campoCategoria ? campoCategoria.value : "Geral",
         data: campoData ? campoData.value : ""
@@ -62,15 +80,14 @@ AddList.addEventListener("submit", (e) => {
 
     oportunidades.push(novaOportunidade);
     salvarOportunidade();
-    Listar(oportunidade);
+    Listar(novaOportunidade);
 
-    campoTarefa.value = "";
-    if (campoDescricao) campoDescricao.value = "";
-    if (campoData) campoData.value = "";
-    sessionStorage.removeItem("rascunhoOportunidade");
+    campoOportuniadade.value = ""
+    campoDescricao.value = ""
+    campoCategoria.value = ""
+    campoData.value = ""
 
-    campoOportuniadade.value = "";
-    sessionStorage.removeItem("rascunhoOportunidade");
+    sessionStorage.removeItem("rascunho");
 
     audioNovo.play();
 });
@@ -81,27 +98,56 @@ function Listar(oportunidade) {
     const form = document.createElement("form");
     const input = document.createElement("input");
     const h3 = document.createElement("h3");
-    const pDescricao = document.createElement("p");
     const spanCategoria = document.createElement("span");
     const spanData = document.createElement("span");
-
+    const descricao = document.createElement("button");
+    const hr = document.createElement("hr")
+    const divDescricao = document.createElement("div")
+    const pDescricao = document.createElement("p")
+    
     input.type = "submit";
     input.value = "X";
     input.classList.add("excluir");
+    
+    descricao.type = "button"
+    descricao.textContent = "▶ Descrição"
 
-    h3.textContent = oportunidade;
-    pDescricao.textContent = oportunidade.descricao;
-    spanCategoria.textContent = `Categoria: ${oportunidade.categoria}`;
-    spanData.textContent = oportunidade.data ? `Data: ${oportunidade.data.split('-').reverse().join('/')}` : '';
+    //ADICIONA A DIV DE DETALHES QUANDO CLICADO
+    descricao.addEventListener("click", () => {
+        if (descricao.textContent === "▶ Descrição") {
+            descricao.textContent = "▼ Descrição";
+            form.style = "row-gap: clamp(0.5rem,0.6vw,1.5rem)"
+            form.appendChild(hr)
+            form.appendChild(divDescricao)
+            descricao.addEventListener("mouseenter", () => audioHover.play());
+            descricao.addEventListener("click", () => audioClick.play());
 
+        } else {
+            descricao.textContent = "▶ Descrição";
+            form.style = "row-gap: 0"
+            hr.remove()
+            divDescricao.remove()
+        }
+     });
+    
+     
+     h3.textContent = oportunidade.titulo;
+     spanCategoria.textContent = `Categoria: ${oportunidade.categoria}`;
+     spanData.textContent = oportunidade.data ? `Data: ${oportunidade.data.split('-').reverse().join('/')}` : '';
+     pDescricao.textContent = oportunidade.descricao
+    
     Lista.appendChild(li);
     li.appendChild(form);
     form.appendChild(input);
     form.appendChild(h3);
+    form.appendChild(spanCategoria);
+    form.appendChild(spanData);
+    form.appendChild(descricao)
+    divDescricao.appendChild(pDescricao)
 
+    
+    
     listaComItens();
-
-    //ADICIONA UMA AÇÃO NO SUBMIT DA oportunidade EM PARTICULAR
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -138,6 +184,15 @@ document.getElementById("submit").addEventListener("mouseenter", () => audioHove
 
 //QUANDO O MOUSE PASSAR SOBRE O SUBMIT OU CLICA NO SUBMIT, TOCA O RESPECTIVO EFEITO
 campoOportuniadade.addEventListener("click", () => audioClick.play());
+campoCategoria.addEventListener("click", () => audioClick.play());
+campoData.addEventListener("click", () => audioClick.play());
+campoDescricao.addEventListener("click", () => audioClick.play());
+
 campoOportuniadade.addEventListener("mouseenter", () => audioHover.play());
+campoCategoria.addEventListener("mouseenter", () => audioHover.play());
+campoData.addEventListener("mouseenter", () => audioHover.play());
+campoDescricao.addEventListener("mouseenter", () => audioHover.play());
+
+
 
 carregarDados();
