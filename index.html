@@ -20,12 +20,37 @@
         <h1 class="text-[clamp(1.5rem,3.5vw,7rem)] font-light tracking-tight text-gray-700 mb-10 text-center">Agenda de Oportunidades</h1>
 
         <form id="AddList" class="w-full max-w-xl flex flex-col items-center gap-5">
-            <label for="AddText" class="w-full flex flex-col gap-2 text-[clamp(1rem,1.3vw,4rem)] text-gray-500">
-                Nova Oportunidade
-                <input type="text" id="AddText" autocomplete="off"
-                    class="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-[clamp(0.2rem,1vw,5rem)] font-normal text-gray-800 shadow-sm transition-shadow duration-200 hover:shadow-md focus:shadow-md focus:border-gray-300 focus:outline-none">
-                    
-            </label>
+
+            <div class="grid grid-cols-[1fr_auto] grid-rows-[1fr_1fr] gap-[clamp(1rem,1.8vw,2.8rem)] items-center">
+
+                <label for="AddText" class="w-full flex flex-col gap-2 text-[clamp(1rem,1.3vw,4rem)] text-gray-500">
+                    Oportunidade
+                    <input type="text" id="AddText" autocomplete="off"
+                        class="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-[clamp(0.2rem,1vw,5rem)] font-normal text-gray-800 shadow-sm transition-shadow duration-200 hover:shadow-md focus:shadow-md focus:border-gray-300 focus:outline-none">
+                </label>
+                <label for="AddDescricao" class="w-full flex flex-col gap-2 text-[clamp(1rem,1.3vw,4rem)] text-gray-500">
+                    Descrição
+                    <input type="text" id="AddDescricao" autocomplete="off"
+                        class="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-[clamp(0.2rem,1vw,5rem)] font-normal text-gray-800 shadow-sm transition-shadow duration-200 hover:shadow-md focus:shadow-md focus:border-gray-300 focus:outline-none"> 
+                </label>
+                <label for="AddCategoria" class="w-full flex flex-col gap-2 text-[clamp(1rem,1.3vw,4rem)] text-gray-500">
+                    Categoria
+                    <select id="AddCategoria" autocomplete="off"
+                        class="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-[clamp(0.2rem,1vw,5rem)] font-normal text-gray-800 shadow-sm transition-shadow duration-200 hover:shadow-md focus:shadow-md focus:border-gray-300 focus:outline-none">
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Negócios">Negócios</option>
+                        <option value="Educação">Educação</option>
+                    </select>
+                </label>
+                <label for="AddData" class="w-full flex flex-col gap-2 text-[clamp(1rem,1.3vw,4rem)] text-gray-500">
+                    Data
+                    <input type="date" id="AddData" autocomplete="off"
+                        class="w-full rounded-full border border-gray-200 bg-white px-6 py-3 text-[clamp(0.2rem,1vw,5rem)] font-normal text-gray-800 shadow-sm transition-shadow duration-200 hover:shadow-md focus:shadow-md focus:border-gray-300 focus:outline-none"> 
+                </label>
+
+            </div>
+            
             <input type="submit" value="Adicionar" id="submit"
                 class="cursor-pointer rounded-md border border-gray-100 bg-gray-50 px-5 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-200 hover:bg-gray-100 hover:shadow-sm focus:outline-none">
         </form>
