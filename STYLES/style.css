@@ -3,13 +3,15 @@
 }
 
 #Lista li form {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-rows: auto auto 1fr;
     align-items: center;
     column-gap: 1rem;
     font-family: Roboto, Arial, sans-serif;
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 9999px;
+    border-radius: 2rem;
     padding: 0.5rem 1rem 0.5rem 0.5rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     transition: box-shadow 180ms ease-in-out;
@@ -20,15 +22,15 @@
 }
 
 #Lista li form input {
+    grid-row: 1;
     width: 2rem;
     height: 2rem;
-    border: none;
-    border-radius: 9999px;
+    border-radius: 100%;
     background-color: #f3f4f6;
     color: #6b7280;
     font-size: 0.8rem;
     cursor: pointer;
-    align-self: center;
+
     transition: background-color 180ms ease-in-out, color 180ms ease-in-out;
 
     &:hover {
@@ -37,10 +39,25 @@
     }
 }
 
-#Lista li form h3 {
-    font-size: 1.05rem;
+#Lista li form h3, button, span {
+    font-size: clamp(0.8rem,1.1vw,3rem);
     font-weight: 400;
     color: #374151;
-    flex-grow: 1;
+    grid-row: 1;
     text-align: start;
+}
+
+#Lista li form button {
+    cursor: pointer;
+}
+
+#Lista li form div {
+    grid-column: span 5;
+    grid-row: 3;
+    padding: 0 clamp(0.5rem,0.8vw,1.2rem) 0 clamp(0.5rem,0.8vw,1.2rem);
+    padding-bottom: clamp(0.5rem,0.6vw,1rem);
+}
+
+#Lista li form hr {
+    grid-column: span 5;
 }
