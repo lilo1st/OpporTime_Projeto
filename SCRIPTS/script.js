@@ -3,6 +3,7 @@ const section = document.getElementById("section");
 const linha = document.getElementById("linha");
 const Lista = document.getElementById("Lista");
 const campoOportuniadade = document.getElementById("AddText");
+const contador = document.getElementById("contador");
 const campoDescricao = document.getElementById("AddDescricao"); 
 const campoCategoria = document.getElementById("AddCategoria");
 const campoData = document.getElementById("AddData");
@@ -12,7 +13,6 @@ let oportunidades = [];
 const audioNovo = new Audio("ASSETS/SOUNDS/new.m4a");
 const audioHover = new Audio("ASSETS/SOUNDS/hover.m4a");
 const audioClick = new Audio("ASSETS/SOUNDS/click.m4a");
-
 
 //SALVA A OPORTUNIDADE NO LOCALSTORAGE
 function salvarOportunidade() {
@@ -61,6 +61,8 @@ function carregarDados() {
 
     if (oportunidades.length === 0) {
         listaVazia();
+    } else {
+        contador.textContent = `Oportunidades: ${oportunidades.length}`
     }
 }
 
@@ -116,7 +118,7 @@ function Listar(oportunidade) {
     descricao.addEventListener("click", () => {
         if (descricao.textContent === "▶ Descrição") {
             descricao.textContent = "▼ Descrição";
-            form.style = "row-gap: clamp(0.5rem,0.6vw,1.5rem)"
+            form.style.rowGap = "clamp(0.5rem,0.6vw,1.5rem)"
             form.appendChild(hr)
             form.appendChild(divDescricao)
             descricao.addEventListener("mouseenter", () => audioHover.play());
@@ -124,18 +126,19 @@ function Listar(oportunidade) {
 
         } else {
             descricao.textContent = "▶ Descrição";
-            form.style = "row-gap: 0"
+            form.style.rowGap = "0"
             hr.remove()
             divDescricao.remove()
         }
      });
     
-     
+     //ATRIBUI VALOR A CADA CAMPO
      h3.textContent = oportunidade.titulo;
      spanCategoria.textContent = `Categoria: ${oportunidade.categoria}`;
      spanData.textContent = oportunidade.data ? `Data: ${oportunidade.data.split('-').reverse().join('/')}` : '';
      pDescricao.textContent = oportunidade.descricao
     
+    //DEFINE QUEM É O ELEMENTO FILHO E PAI
     Lista.appendChild(li);
     li.appendChild(form);
     form.appendChild(input);
@@ -148,6 +151,8 @@ function Listar(oportunidade) {
     
     
     listaComItens();
+
+    //CONTROLA QUAL OPORTUNIDADE VAI SER EXCLUIDA
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -167,17 +172,32 @@ function Listar(oportunidade) {
     });
 
     input.addEventListener("mouseenter", () => audioHover.play());
+    contador.textContent = `Oportunidades: ${oportunidades.length}`
 }
 
+//VERIFICA SE A LISTA ESTÁ COM OPORTUNIDADES
 function listaComItens() {
     section.style.display = "grid";
     linha.style.display = "grid";
 }
 
+//VERIFICA SE A LISTA ESTÁ VAZIA E CRIA UM MODAL
 function listaVazia() {
     section.style.display = "none";
     linha.style.display = "none";
+
+    const modal = document.createElement("modal");
+
+    const caixa = document.createElement("div");
+    caixa.textContent = "Nenhuma oportunidade cadastrada.";
+
+    modal.appendChild(caixa);
+    document.body.appendChild(modal);
+
+    setTimeout(() => modal.remove(), 800)
 }
+
+
 
 //QUANDO O MOUSE PASSAR SOBRE O SUBMIT, TOCA O EFEITO DE HOVER
 document.getElementById("submit").addEventListener("mouseenter", () => audioHover.play());
@@ -192,7 +212,5 @@ campoOportuniadade.addEventListener("mouseenter", () => audioHover.play());
 campoCategoria.addEventListener("mouseenter", () => audioHover.play());
 campoData.addEventListener("mouseenter", () => audioHover.play());
 campoDescricao.addEventListener("mouseenter", () => audioHover.play());
-
-
 
 carregarDados();
